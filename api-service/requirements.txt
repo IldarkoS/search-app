@@ -5,3 +5,4 @@ aiokafka
 pydantic
 python-multipart
 pydantic-settings
+loguru
