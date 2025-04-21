@@ -9,6 +9,8 @@ services:
     container_name: api-service
     ports:
       - "8000:8000"
+    volumes:
+      - ../../api-service:/app
     environment:
       - PYTHONUNBUFFERED=1
     depends_on:
