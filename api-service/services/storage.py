@@ -1,6 +1,7 @@
 import boto3
 from uuid import UUID
 from config import settings
+from utils.logger import logger
 
 s3 = boto3.client(
     "s3",
@@ -18,5 +19,7 @@ def ensure_bucket_exists():
 def upload_file_to_minio(document_id: UUID, file_data: bytes, filename: str) -> str:
     ensure_bucket_exists()
     path = f"documents/{document_id}_{filename}"
+    logger.debug(f"Uploading file to MinIO: bucket={settings.MINIO_BUCKET_NAME}, path={path}, size={len(file_data)} bytes")
     s3.put_object(Bucket=settings.MINIO_BUCKET_NAME, Key=path, Body=file_data)
+    logger.success(f"File uploaded: {path}")
     return path
