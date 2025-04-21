@@ -19,6 +19,8 @@ services:
       - postgres
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
   # ────────────────────────────────────────────── #
   processor-service:
@@ -35,6 +37,8 @@ services:
       - postgres
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
   # ────────────────────────────────────────────── #
   search-service:
@@ -47,6 +51,8 @@ services:
       - postgres
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
   # ────────────────────────────────────────────── #
   postgres:
@@ -63,6 +69,8 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
   # ────────────────────────────────────────────── #
   qdrant:
@@ -75,6 +83,8 @@ services:
       - qdrant-data:/qdrant/storage
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
   # ────────────────────────────────────────────── #
   minio:
@@ -91,6 +101,8 @@ services:
       - minio-data:/data
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
   # ────────────────────────────────────────────── #
   zookeeper:
@@ -103,6 +115,8 @@ services:
       - "2181:2181"
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
   kafka:
     image: confluentinc/cp-kafka:7.0.1
@@ -118,6 +132,8 @@ services:
       - zookeeper
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
   # ────────────────────────────────────────────── #
   kafka-ui:
@@ -134,6 +150,8 @@ services:
       - zookeeper
     networks:
       - semantic-network
+    env_file:
+      - ../../.env
 
 # ────────────────────────────────────────────── #
 volumes:
