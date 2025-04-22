@@ -1,9 +1,12 @@
+import traceback
+import uuid
+
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
+
 from utils.logger import logger
-import traceback
-import uuid
+
 
 class ExceptionLoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
