@@ -24,6 +24,11 @@ class Settings(BaseSettings):
 
     embedding_model_name: str = Field(default="sentence-transformers/all-MiniLM-L6-v2")
 
+    # Qdrant
+    qdrant_host: str
+    qdrant_port: int
+    qdrant_collection: str
+
     class Config:
         env_file = ".env"
 
