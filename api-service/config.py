@@ -1,7 +1,13 @@
-from pydantic_settings import BaseSettings
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
+    log_level: str = Field(default="INFO")
+
+    # Kafka
     KAFKA_BOOTSTRAP_SERVERS: str
+
+    # MinIO
     MINIO_ENDPOINT: str
     MINIO_ACCESS_KEY: str
     MINIO_SECRET_KEY: str
