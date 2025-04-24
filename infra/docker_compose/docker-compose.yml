@@ -26,10 +26,6 @@ services:
   processor-service:
     build: ../../processor-service
     container_name: processor-service
-    ports:
-      - "8001:8000"
-    environment:
-      - PYTHONUNBUFFERED=1
     depends_on:
       - kafka
       - minio
@@ -39,6 +35,7 @@ services:
       - semantic-network
     env_file:
       - ../../.env
+    restart: always
 
   # ────────────────────────────────────────────── #
   search-service:

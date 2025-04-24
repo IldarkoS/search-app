@@ -1,2 +1,13 @@
-fastapi
-uvicorn[standard]
+pydantic
+pydantic-settings
+python-dotenv
+aiokafka
+minio
+python-docx
+pdfminer.six
+sentence-transformers
+torch
+transformers
+loguru
+requests
+tenacity
