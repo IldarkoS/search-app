@@ -13,7 +13,7 @@ class ProcessDocumentUseCase:
     def execute(self, task: DocumentTask):
         logger.info("Processing document: {}", task.document_id)
 
-        file_bytes = self.storage.download(task.file_path)
+        file_bytes = self.storage.download(task.filepath)
         text = self.extractor.extract(file_bytes)
         embedding = self.embedder.encode(text)
         self.repo.save(task.document_id, embedding, text)
