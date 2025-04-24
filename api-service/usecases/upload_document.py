@@ -17,7 +17,7 @@ class UploadDocumentUseCase:
 
         path = self.storage.save(document_id, file.filename, file_data)
 
-        await self.publisher.publish("document_uploaded", {
+        await self.publisher.publish(event={
             "document_id": str(document_id),
             "filename": file.filename,
             "filepath": path,

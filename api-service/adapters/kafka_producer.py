@@ -24,7 +24,7 @@ class KafkaEventProducer(EventPublisherPort):
         logger.critical("Could not connect to Kafka after retries")
         raise ConnectionError("Kafka not available")
 
-    async def publish(self, topic: str, event: dict) -> None:
+    async def publish(self, event: dict, topic: str = settings.KAFKA_TOPIC) -> None:
         await self.producer.send_and_wait(topic, event)
 
     async def close(self):

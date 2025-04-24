@@ -6,6 +6,7 @@ class Settings(BaseSettings):
 
     # Kafka
     KAFKA_BOOTSTRAP_SERVERS: str
+    KAFKA_TOPIC: str
 
     # MinIO
     MINIO_ENDPOINT: str
