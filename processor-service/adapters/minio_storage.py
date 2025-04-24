@@ -1,6 +1,6 @@
 from loguru import logger
 from minio import Minio
-from minio.error import S3Error, NoSuchKey
+from minio.error import S3Error
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from config import settings
@@ -39,8 +39,11 @@ class MinioStorageAdapter(FileStorageInterface):
             logger.info("Successfully downloaded {} ({} bytes)", path, len(data))
             return data
 
-        except NoSuchKey:
-            logger.warning("File not found in MinIO: {}", path)
+        except S3Error as e:
+            if e.code == "NoSuchKey":
+                logger.warning("File not found in MinIO: {}", path)
+            else:
+                logger.exception("S3Error while downloading file: {}", e)
             raise
         except Exception as e:
             logger.exception("Failed to download file '{}': {}", path, e)
