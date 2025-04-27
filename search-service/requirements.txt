@@ -1,2 +1,8 @@
 fastapi
-uvicorn[standard]
+uvicorn[standart]
+sentence-transformers
+qdrant-client
+prometheus-client
+python-dotenv
+structlog
+pydantic-settings
