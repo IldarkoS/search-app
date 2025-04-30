@@ -2,7 +2,7 @@ from qdrant_client import QdrantClient
 
 from config import settings
 from ports.SearcherRepository import SearcherRepository
-from utils.logger import get_logger
+from lib.logger import get_logger
 
 logger = get_logger()
 

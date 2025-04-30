@@ -5,7 +5,7 @@ from adapters.Vectorizer import LocalVectorizer
 from config import settings
 from delivery.handlers.search_handler import create_search_router
 from usecases.search_service import SearchService
-from utils.logger import init_logger
+from lib.logger import init_logger
 
 init_logger(settings.log_level)
 

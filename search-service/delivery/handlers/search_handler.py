@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 from delivery.dto.search_request import SearchRequest
 from delivery.dto.search_response import SearchResponse
 from usecases.search_service import SearchService
-from utils.logger import get_logger
+from lib.logger import get_logger
 
 logger = get_logger()
 

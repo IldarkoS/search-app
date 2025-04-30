@@ -1,6 +1,6 @@
 from ports.SearcherRepository import SearcherRepository
 from ports.Vectorizer import Vectorizer
-from utils.logger import get_logger
+from lib.logger import get_logger
 
 logger = get_logger()
 

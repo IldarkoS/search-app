@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer
 
 from config import settings
 from ports.Vectorizer import Vectorizer
-from utils.logger import get_logger
+from lib.logger import get_logger
 
 logger = get_logger()
 
