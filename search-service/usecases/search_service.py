@@ -9,13 +9,13 @@ class SearchService:
         self.vectorizer = vectorizer
         self.searcher = searcher
 
-    async def search_similar_documents(self, query: str, top_k: int = 5) -> list[dict]:
-        logger.info("Starting search for similar documents", query_length=len(query), top_k=top_k)
+    async def search_similar_documents(self, query: str) -> list[dict[str, float]]:
+        logger.info("Starting semantic search", query_length=len(query))
 
         embedding = await self.vectorizer.vectorize(query)
-        logger.info("Vectorization completed")
+        logger.info("Text vectorized", embedding_dim=len(embedding))
 
-        results = await self.searcher.search(embedding, top_k)
-        logger.info("Search completed", results_count=len(results))
+        results = await self.searcher.search(embedding)
+        logger.info("Search finished", results_count=len(results))
 
         return results
