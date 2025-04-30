@@ -6,3 +6,6 @@ pydantic
 python-multipart
 pydantic-settings
 loguru
+httpx
+python-docx
+pdfminer.six

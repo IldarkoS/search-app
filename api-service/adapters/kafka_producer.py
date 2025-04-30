@@ -3,7 +3,7 @@ import json
 from aiokafka import AIOKafkaProducer
 from ports.event_publisher import EventPublisherPort
 from config import settings
-from utils.logger import logger
+from lib.logger import logger
 
 class KafkaEventProducer(EventPublisherPort):
     def __init__(self):

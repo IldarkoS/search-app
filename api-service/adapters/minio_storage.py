@@ -2,7 +2,7 @@ import boto3
 from uuid import UUID
 from config import settings
 from ports.file_storage import FileStoragePort
-from utils.logger import logger
+from lib.logger import logger
 
 class MinioStorageAdapter(FileStoragePort):
     def __init__(self):
