@@ -10,13 +10,12 @@ class SearcherClient(SearcherClientInterface):
         self.base_url = settings.SEARCHER_SERVICE_URL
         logger.info(f"Searcher service url: {self.base_url}/search/")
 
-    async def search(self, query: str, top_k) -> list[dict]:
+    async def search(self, query: str) -> list[dict]:
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{self.base_url}/search/",
                 json={
                     "query": query,
-                    "top_k": top_k,
                 },
                 timeout=10,
             )

@@ -10,4 +10,3 @@ class SearchResponse(BaseModel):
 
 class SearchRequest(BaseModel):
     query: Optional[str] = Field(None, description="Text fragment to search similar documents for")
-    top_k: int = Field(default=5, description="Number of most similar documents to return")

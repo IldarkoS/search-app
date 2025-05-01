@@ -1,30 +1,33 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends, Request
-from usecases.search_document import SearchDocumentsUseCase
+from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Request
 
-from delivery.dto.search import SearchResponse
+from delivery.dto.search import SearchRequest, SearchResponse
 from lib.logger import logger
 from lib.text_extractor import extract_text
+from usecases.search_document import SearchDocumentsUseCase
 
 router = APIRouter()
 
+def get_search_usecase(request: Request) -> SearchDocumentsUseCase:
+    return request.app.state.search_usecase
+
 @router.post("/", response_model=SearchResponse)
 async def search_documents(
-    request: Request,
     file: UploadFile = File(None),
-    text: str = Form(None),
-    top_k: int = Form(5),
+    request_model: SearchRequest = Depends(),
+    usecase: SearchDocumentsUseCase = Depends(get_search_usecase)
 ):
-    usecase: SearchDocumentsUseCase = request.app.state.search_usecase
-    if not file and not text:
-        raise HTTPException(status_code=400, detail="Either file or text must be provided.")
+    if not file and not request_model.query:
+        raise HTTPException(status_code=400, detail="Either file or query must be provided.")
 
-    if file:
-        try:
-            content = await file.read()
-            text = extract_text(content, file.filename)
-        except Exception as e:
-            logger.error("Failed to extract text", error=str(e))
-            raise HTTPException(status_code=400, detail="Failed to extract text from file.")
+    try:
+        if file:
+            file_data = await file.read()
+            query = extract_text(file_data, file.filename)
+        else:
+            query = request_model.query
+    except Exception as e:
+        logger.error("Failed to extract text", error=str(e))
+        raise HTTPException(status_code=400, detail="Failed to extract text from file.")
 
-    results = await usecase.search(text, top_k)
+    results = await usecase.search(query=query)
     return SearchResponse(results=results)
