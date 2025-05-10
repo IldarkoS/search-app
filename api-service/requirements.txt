@@ -9,3 +9,4 @@ loguru
 httpx
 python-docx
 pdfminer.six
+asyncpg

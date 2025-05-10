@@ -12,6 +12,7 @@ def get_search_usecase(request: Request) -> SearchDocumentsUseCase:
 
 @router.post("/", response_model=SearchResponse)
 async def search_documents(
+    request: Request,
     file: UploadFile = File(None),
     request_model: SearchRequest = Depends(),
     usecase: SearchDocumentsUseCase = Depends(get_search_usecase)
@@ -29,5 +30,5 @@ async def search_documents(
         logger.error("Failed to extract text", error=str(e))
         raise HTTPException(status_code=400, detail="Failed to extract text from file.")
 
-    results = await usecase.search(query=query)
-    return SearchResponse(results=results)
+    total, results = await usecase.search(query=query, db=request.app.state.db)
+    return SearchResponse(total=total, results=results)

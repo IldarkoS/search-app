@@ -13,11 +13,12 @@ async def upload_document(
     file: UploadFile = File(...)
 ) -> UploadResponse:
     usecase: UploadDocumentUseCase = request.app.state.upload_usecase
+    db = request.app.state.db
 
     logger.info("Upload request received", filename=file.filename)
 
     try:
-        document_id: UUID = await usecase.upload(file)
+        document_id: UUID = await usecase.upload(file, db=db)
         logger.info("Upload successful", document_id=str(document_id))
         return UploadResponse(document_id=document_id, status="processing")
     except Exception as e:

@@ -25,3 +25,10 @@ class MinioStorageAdapter(FileStoragePort):
         self.s3.put_object(Bucket=settings.MINIO_BUCKET_NAME, Key=path, Body=file_data)
         logger.success(f"File uploaded to MinIO: {path}")
         return path
+
+    def presign_get(self, key: str, expires: int = 900) -> str:
+        return self.s3.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": settings.MINIO_BUCKET_NAME, "Key": key},
+            ExpiresIn=expires,
+        )

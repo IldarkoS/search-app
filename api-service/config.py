@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     # Searcher
     SEARCHER_SERVICE_URL: str
 
+    PG_DSN: str
+
     class Config:
         env_file = ".env"
 
