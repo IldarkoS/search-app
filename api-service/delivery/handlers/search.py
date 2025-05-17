@@ -1,6 +1,8 @@
+from uuid import UUID
+
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Request
 
-from delivery.dto.search import SearchRequest, SearchResponse
+from delivery.dto.search import SearchRequest, SearchResponse, DocumentDetailResponse
 from lib.logger import logger
 from lib.text_extractor import extract_text
 from usecases.search_document import SearchDocumentsUseCase
@@ -32,3 +34,14 @@ async def search_documents(
 
     total, results = await usecase.search(query=query, db=request.app.state.db)
     return SearchResponse(total=total, results=results)
+
+
+
+@router.get("/{document_id}", response_model=DocumentDetailResponse)
+async def get_document(document_id: UUID, request: Request):
+    usecase: SearchDocumentsUseCase = request.app.state.search_usecase
+    try:
+        result = await usecase.get_by_id(document_id, db=request.app.state.db)
+        return DocumentDetailResponse(**result)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))

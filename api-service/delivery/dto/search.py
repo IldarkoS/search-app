@@ -15,3 +15,11 @@ class SearchItem(BaseModel):
 class SearchResponse(BaseModel):
     total: int
     results: list[SearchItem]
+
+class DocumentDetailResponse(BaseModel):
+    document_id: str
+    title: Optional[str]
+    type: Optional[str]
+    pages: Optional[int]
+    text_preview: Optional[str]
+    download_url: Optional[str]

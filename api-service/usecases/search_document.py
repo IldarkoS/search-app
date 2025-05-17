@@ -1,7 +1,9 @@
+from uuid import UUID
+
 from adapters.minio_storage import MinioStorageAdapter
 from adapters.searcher_client import SearcherClient
-
 from lib.logger import logger
+from lib.text_extractor import extract_text
 
 
 class SearchDocumentsUseCase:
@@ -30,7 +32,25 @@ class SearchDocumentsUseCase:
                 "title": m.get("title"),
                 "type": m.get("type"),
                 "pages": m.get("pages"),
-                "thumb_url": self.storage.presign_get(f"documents/{_id}_thumb.png")
-                if m else None,
             })
         return len(raw), enriched
+
+
+    async def get_by_id(self, document_id: UUID, db) -> dict:
+        row = await db.fetchrow(
+            "SELECT id, title, type, pages, file_path, text_preview FROM documents WHERE id = $1", document_id
+        )
+        if not row:
+            raise ValueError("Document not found")
+
+        return {
+            "document_id": str(row["id"]),
+            "title": row["title"],
+            "type": row["type"],
+            "pages": row["pages"],
+            "text_preview": row["text_preview"],
+            "download_url": self.storage.generate_download_url(
+                path=row["file_path"],
+                original_filename=f"{row['title']}.{row['type']}"
+            ),
+        }

@@ -12,3 +12,5 @@ loguru
 requests
 tenacity
 qdrant-client
+sqlalchemy
+psycopg[binary]

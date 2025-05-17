@@ -1,8 +1,12 @@
-import boto3
+from urllib.parse import quote
 from uuid import UUID
+
+import boto3
+
 from config import settings
-from ports.file_storage import FileStoragePort
 from lib.logger import logger
+from ports.file_storage import FileStoragePort
+
 
 class MinioStorageAdapter(FileStoragePort):
     def __init__(self):
@@ -26,9 +30,16 @@ class MinioStorageAdapter(FileStoragePort):
         logger.success(f"File uploaded to MinIO: {path}")
         return path
 
-    def presign_get(self, key: str, expires: int = 900) -> str:
-        return self.s3.generate_presigned_url(
-            "get_object",
-            Params={"Bucket": settings.MINIO_BUCKET_NAME, "Key": key},
-            ExpiresIn=expires,
+    def generate_download_url(self, path: str, original_filename: str, expires: int = 900) -> str:
+        disposition = f'attachment; filename="{quote(original_filename)}"'
+        url = self.s3.generate_presigned_url(
+            ClientMethod="get_object",
+            Params={
+                "Bucket": settings.MINIO_BUCKET_NAME,
+                "Key": path,
+                "ResponseContentDisposition": disposition
+            },
+            ExpiresIn=expires
         )
+        logger.debug(f"Generated download URL for {path}")
+        return url
